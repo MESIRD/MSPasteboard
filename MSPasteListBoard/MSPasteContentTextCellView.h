@@ -11,5 +11,6 @@
 @interface MSPasteContentTextCellView : NSTableCellView
 
 @property (weak) IBOutlet NSTextField *textLabel;
+@property (weak) IBOutlet NSImageView *checkIconView;
 
 @end

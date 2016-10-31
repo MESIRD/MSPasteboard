@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="exp-V8-Cfn">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16B2548a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="exp-V8-Cfn">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11201"/>
@@ -107,13 +107,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView autohidesScrollers="YES" horizontalLineScroll="52" horizontalPageScroll="10" verticalLineScroll="52" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="67v-wE-T2x">
+                            <scrollView autohidesScrollers="YES" horizontalLineScroll="52" horizontalPageScroll="10" verticalLineScroll="52" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="67v-wE-T2x">
                                 <rect key="frame" x="0.0" y="20" width="320" height="420"/>
                                 <clipView key="contentView" id="Dlh-ax-1wA">
                                     <rect key="frame" x="1" y="1" width="318" height="418"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="50" rowSizeStyle="automatic" viewBased="YES" id="yAf-aI-Ffc">
+                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="none" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="50" rowSizeStyle="automatic" viewBased="YES" id="yAf-aI-Ffc">
                                             <rect key="frame" x="0.0" y="0.0" width="318" height="418"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
@@ -139,12 +139,15 @@
                                                             <subviews>
                                                                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fCH-Ha-dhv">
                                                                     <rect key="frame" x="0.0" y="0.0" width="315" height="1"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="1" id="PBJ-RW-cei"/>
+                                                                    </constraints>
                                                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" image="one_pix" id="okp-eG-9Yx"/>
                                                                 </imageView>
                                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7Q2-eQ-bFs">
-                                                                    <rect key="frame" x="10" y="5" width="294" height="40"/>
+                                                                    <rect key="frame" x="48" y="5" width="239" height="40"/>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="height" constant="40" id="mtz-pW-3ad"/>
+                                                                        <constraint firstAttribute="height" constant="40" id="0hA-mz-GeW"/>
                                                                     </constraints>
                                                                     <textFieldCell key="cell" allowsUndo="NO" sendsActionOnEndEditing="YES" id="gIG-cI-MxM">
                                                                         <font key="font" metaFont="system" size="14"/>
@@ -152,17 +155,27 @@
                                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                 </textField>
+                                                                <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qma-e9-ibv">
+                                                                    <rect key="frame" x="290" y="15" width="20" height="20"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="20" id="I60-KL-TiM"/>
+                                                                        <constraint firstAttribute="height" constant="20" id="dHP-Wg-evg"/>
+                                                                    </constraints>
+                                                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="check_icon" id="yqk-Kf-0JJ"/>
+                                                                </imageView>
                                                             </subviews>
                                                             <constraints>
-                                                                <constraint firstItem="fCH-Ha-dhv" firstAttribute="leading" secondItem="hbj-bc-4TC" secondAttribute="leading" id="2MM-Yq-wHW"/>
-                                                                <constraint firstItem="fCH-Ha-dhv" firstAttribute="centerX" secondItem="7Q2-eQ-bFs" secondAttribute="centerX" id="Afo-Xi-FGU"/>
-                                                                <constraint firstItem="fCH-Ha-dhv" firstAttribute="top" secondItem="7Q2-eQ-bFs" secondAttribute="bottom" constant="4" id="HRf-Bl-ydZ"/>
+                                                                <constraint firstItem="7Q2-eQ-bFs" firstAttribute="centerY" secondItem="hbj-bc-4TC" secondAttribute="centerY" id="CJl-hE-Y7I"/>
                                                                 <constraint firstAttribute="bottom" secondItem="fCH-Ha-dhv" secondAttribute="bottom" id="KIG-rn-cw5"/>
-                                                                <constraint firstItem="7Q2-eQ-bFs" firstAttribute="centerX" secondItem="hbj-bc-4TC" secondAttribute="centerX" id="RRE-l4-iZi"/>
-                                                                <constraint firstItem="7Q2-eQ-bFs" firstAttribute="centerY" secondItem="hbj-bc-4TC" secondAttribute="centerY" id="ULH-sy-jWL"/>
-                                                                <constraint firstItem="7Q2-eQ-bFs" firstAttribute="leading" secondItem="hbj-bc-4TC" secondAttribute="leading" constant="12" id="kDQ-zz-qBw"/>
+                                                                <constraint firstAttribute="trailing" secondItem="qma-e9-ibv" secondAttribute="trailing" constant="5" id="PdB-eG-nbB"/>
+                                                                <constraint firstItem="fCH-Ha-dhv" firstAttribute="leading" secondItem="hbj-bc-4TC" secondAttribute="leading" id="XSB-KC-VcG"/>
+                                                                <constraint firstAttribute="trailing" secondItem="fCH-Ha-dhv" secondAttribute="trailing" id="htJ-JT-z5M"/>
+                                                                <constraint firstAttribute="trailing" secondItem="7Q2-eQ-bFs" secondAttribute="trailing" constant="30" id="iZ9-2z-Zeq"/>
+                                                                <constraint firstItem="7Q2-eQ-bFs" firstAttribute="leading" secondItem="hbj-bc-4TC" secondAttribute="leading" constant="50" id="tR5-XW-Qb6"/>
+                                                                <constraint firstItem="qma-e9-ibv" firstAttribute="centerY" secondItem="hbj-bc-4TC" secondAttribute="centerY" id="tbq-DF-nlq"/>
                                                             </constraints>
                                                             <connections>
+                                                                <outlet property="checkIconView" destination="qma-e9-ibv" id="Zm8-qP-tCp"/>
                                                                 <outlet property="textLabel" destination="7Q2-eQ-bFs" id="Ib7-Sp-4Pm"/>
                                                             </connections>
                                                         </tableCellView>
@@ -172,23 +185,37 @@
                                                             <subviews>
                                                                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fJl-Zs-UHA">
                                                                     <rect key="frame" x="0.0" y="0.0" width="315" height="1"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="1" id="TwJ-P5-qdr"/>
+                                                                    </constraints>
                                                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" image="one_pix" id="9X1-cm-JHf"/>
                                                                 </imageView>
                                                                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5Ub-J4-cM1">
-                                                                    <rect key="frame" x="3" y="1" width="309" height="48"/>
+                                                                    <rect key="frame" x="50" y="0.0" width="235" height="50"/>
                                                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" id="8NK-Lp-bgi"/>
+                                                                </imageView>
+                                                                <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tCt-9F-wHp">
+                                                                    <rect key="frame" x="290" y="15" width="20" height="20"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="20" id="7jh-1Q-Bii"/>
+                                                                        <constraint firstAttribute="height" constant="20" id="jwZ-rr-ZKX"/>
+                                                                    </constraints>
+                                                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="check_icon" id="csG-YT-yAk"/>
                                                                 </imageView>
                                                             </subviews>
                                                             <constraints>
-                                                                <constraint firstAttribute="trailing" secondItem="5Ub-J4-cM1" secondAttribute="trailing" constant="3" id="8c2-CN-USq"/>
+                                                                <constraint firstAttribute="trailing" secondItem="fJl-Zs-UHA" secondAttribute="trailing" id="Bhv-MU-dnm"/>
                                                                 <constraint firstItem="fJl-Zs-UHA" firstAttribute="leading" secondItem="JEy-Zv-LTZ" secondAttribute="leading" id="Egy-Cy-2Wb"/>
-                                                                <constraint firstItem="fJl-Zs-UHA" firstAttribute="centerX" secondItem="5Ub-J4-cM1" secondAttribute="centerX" id="RpK-C4-Zmj"/>
-                                                                <constraint firstItem="5Ub-J4-cM1" firstAttribute="leading" secondItem="JEy-Zv-LTZ" secondAttribute="leading" constant="3" id="V3Q-zQ-cT4"/>
-                                                                <constraint firstItem="5Ub-J4-cM1" firstAttribute="top" secondItem="JEy-Zv-LTZ" secondAttribute="top" constant="1" id="ecJ-EQ-R3D"/>
-                                                                <constraint firstItem="5Ub-J4-cM1" firstAttribute="centerY" secondItem="JEy-Zv-LTZ" secondAttribute="centerY" id="g1p-BM-Rm0"/>
-                                                                <constraint firstItem="fJl-Zs-UHA" firstAttribute="top" secondItem="5Ub-J4-cM1" secondAttribute="bottom" id="kEa-Ox-x1Q"/>
+                                                                <constraint firstAttribute="bottom" secondItem="fJl-Zs-UHA" secondAttribute="bottom" id="HJ1-Jv-mj7"/>
+                                                                <constraint firstAttribute="trailing" secondItem="tCt-9F-wHp" secondAttribute="trailing" constant="5" id="O8y-lR-nRp"/>
+                                                                <constraint firstItem="5Ub-J4-cM1" firstAttribute="leading" secondItem="JEy-Zv-LTZ" secondAttribute="leading" constant="50" id="POi-ZW-7SH"/>
+                                                                <constraint firstAttribute="trailing" secondItem="5Ub-J4-cM1" secondAttribute="trailing" constant="30" id="UAr-Et-Rrr"/>
+                                                                <constraint firstItem="tCt-9F-wHp" firstAttribute="centerY" secondItem="JEy-Zv-LTZ" secondAttribute="centerY" id="dsp-hA-Ts7"/>
+                                                                <constraint firstItem="5Ub-J4-cM1" firstAttribute="centerY" secondItem="tCt-9F-wHp" secondAttribute="centerY" id="h5N-ek-eu8"/>
+                                                                <constraint firstItem="5Ub-J4-cM1" firstAttribute="top" secondItem="JEy-Zv-LTZ" secondAttribute="top" id="mbp-wl-H0b"/>
                                                             </constraints>
                                                             <connections>
+                                                                <outlet property="checkIconView" destination="tCt-9F-wHp" id="9gc-lb-Z42"/>
                                                                 <outlet property="imgView" destination="5Ub-J4-cM1" id="jYS-tA-KGj"/>
                                                             </connections>
                                                         </tableCellView>
@@ -199,11 +226,11 @@
                                     </subviews>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="8G9-E9-1pu">
-                                    <rect key="frame" x="1" y="119" width="223" height="15"/>
+                                    <rect key="frame" x="-100" y="-100" width="223" height="15"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="aPV-zp-6U3">
-                                    <rect key="frame" x="224" y="17" width="15" height="102"/>
+                                    <rect key="frame" x="-100" y="-100" width="15" height="102"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
@@ -343,7 +370,7 @@
                         <subviews>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QYn-aV-nKx">
                                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
-                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" id="EKQ-NI-3cA"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" id="EKQ-NI-3cA"/>
                             </imageView>
                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cjp-Qw-BNT">
                                 <rect key="frame" x="15" y="20" width="450" height="230"/>
@@ -386,6 +413,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="check_icon" width="20" height="20"/>
         <image name="one_pix" width="1" height="1"/>
     </resources>
 </document>

@@ -15,7 +15,10 @@
 
 #import "MSAlertViewController.h"
 
-@interface ViewController () <NSTableViewDelegate, NSTableViewDataSource>
+@interface ViewController () <NSTableViewDelegate, NSTableViewDataSource> {
+    
+    NSInteger _lastSelectedRow;
+}
 
 @property (nonatomic, strong) NSArray *items;
 
@@ -76,6 +79,8 @@ static const NSTimeInterval kRefreshTimeInterval = 5.0f;
     return _pasteboard;
 }
 
+#pragma mark - view initialization
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -84,10 +89,25 @@ static const NSTimeInterval kRefreshTimeInterval = 5.0f;
     _tableView.delegate   = self;
     _tableView.dataSource = self;
     
+    _lastSelectedRow = -1;
+    
     [self _loadData];
     [self _startRefreshTimer];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_clearAllItems) name:@"ClearAllItems" object:nil];
+}
+
+- (void)viewDidAppear {
+    [super viewDidAppear];
+    
+    NSSize minSize = self.view.window.minSize;
+    minSize.width  = 320.0f;
+    minSize.height = 480.0f;
+    self.view.window.minSize = minSize;
+    
+    NSSize maxSize = self.view.window.maxSize;
+    maxSize.width  = 480.0f;
+    self.view.window.maxSize = maxSize;
 }
 
 - (void)setRepresentedObject:(id)representedObject {
@@ -276,19 +296,49 @@ static const NSTimeInterval kRefreshTimeInterval = 5.0f;
 
 - (void)tableViewSelectionDidChange:(NSNotification *)notification {
     
-    if (_tableView.selectedRow < 0 || _tableView.selectedRow >= _items.count) {
-        return;
+    if (_tableView.selectedRow >= 0 && _tableView.selectedRow < _items.count) {
+        // display preview
+        id item = _items[_tableView.selectedRow];
+        MSPreviewViewController *vc = (MSPreviewViewController *)self.previewWC.contentViewController;
+        if ([item isKindOfClass:NSString.class]) {
+            vc.textLabel.stringValue = item;
+            vc.pictureView.image = nil;
+        } else if ([item isKindOfClass:NSImage.class]) {
+            vc.textLabel.stringValue = @"";
+            vc.pictureView.image = item;
+        }
+        
+        // hide check icon
+        if (_lastSelectedRow != -1) {
+            id item = _items[_lastSelectedRow];
+            if ([item isKindOfClass:NSString.class]) {
+                MSPasteContentTextCellView *textCellView = [_tableView viewAtColumn:0 row:_lastSelectedRow makeIfNecessary:NO];
+                textCellView.checkIconView.hidden = YES;
+            } else if ([item isKindOfClass:NSImage.class]) {
+                MSPasteContentImageCellView *imgCellView = [_tableView viewAtColumn:0 row:_lastSelectedRow makeIfNecessary:NO];
+                imgCellView.checkIconView.hidden = YES;
+            }
+        }
+        
+        // show check icon
+        if ([item isKindOfClass:NSString.class]) {
+            MSPasteContentTextCellView *textCellView = [_tableView viewAtColumn:0 row:_tableView.selectedRow makeIfNecessary:NO];
+            textCellView.checkIconView.hidden = NO;
+        } else if ([item isKindOfClass:NSImage.class]) {
+            MSPasteContentImageCellView *imgCellView = [_tableView viewAtColumn:0 row:_tableView.selectedRow makeIfNecessary:NO];
+            imgCellView.checkIconView.hidden = NO;
+        }
     }
     
-    id item = _items[_tableView.selectedRow];
-    MSPreviewViewController *vc = (MSPreviewViewController *)self.previewWC.contentViewController;
-    if ([item isKindOfClass:NSString.class]) {
-        vc.textLabel.stringValue = item;
-        vc.pictureView.image = nil;
-    } else if ([item isKindOfClass:NSImage.class]) {
-        vc.textLabel.stringValue = @"";
-        vc.pictureView.image = item;
-    }
+    _lastSelectedRow = _tableView.selectedRow;
+}
+
+- (BOOL)tableView:(NSTableView *)tableView shouldSelectRow:(NSInteger)row {
+    
+    
+    
+    
+    return YES;
 }
 
 #pragma mark - utils

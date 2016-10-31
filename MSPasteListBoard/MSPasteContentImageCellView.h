@@ -11,5 +11,6 @@
 @interface MSPasteContentImageCellView : NSTableCellView
 
 @property (weak) IBOutlet NSImageView *imgView;
+@property (weak) IBOutlet NSImageView *checkIconView;
 
 @end
