@@ -14,6 +14,8 @@
     [super drawRect:dirtyRect];
     
     // Drawing code here.
+    [self setWantsLayer:YES];
+    self.layer.backgroundColor = [NSColor whiteColor].CGColor;
 }
 
 @end

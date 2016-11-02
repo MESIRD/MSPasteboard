@@ -12,8 +12,9 @@
 #import "MSPasteContentImageCellView.h"
 
 #import "MSPreviewViewController.h"
-
 #import "MSAlertViewController.h"
+
+#import "NSImage+Storage.h"
 
 @interface ViewController () <NSTableViewDelegate, NSTableViewDataSource> {
     
@@ -23,16 +24,24 @@
 @property (nonatomic, strong) NSArray *items;
 
 @property (nonatomic, strong) NSTimer *timer;
-
 @property (nonatomic, strong) NSUserDefaults *userDefaults;
-
 @property (nonatomic, strong) NSPasteboard *pasteboard;
+
+@property (nonatomic, strong) NSWindowController *previewWC;
+@property (nonatomic, strong) NSWindowController *alertWC;
+
+@property (weak) IBOutlet NSView   *toolBarView;
+@property (weak) IBOutlet NSButton *itemCopyButton;
+@property (weak) IBOutlet NSButton *itemSaveButton;
+@property (weak) IBOutlet NSButton *clearAllButton;
+
+@property (weak) IBOutlet NSView        *searchBarView;
+@property (weak) IBOutlet NSSearchField *searchField;
+@property (weak) IBOutlet NSButton      *clearSearchContentButton;
 
 @property (weak) IBOutlet NSTextField *infoLabel;
 
-@property (nonatomic, strong) NSWindowController *previewWC;
-
-@property (nonatomic, strong) NSWindowController *alertWC;
+@property (weak) IBOutlet NSView *emptyView;
 
 @end
 
@@ -91,6 +100,22 @@ static const NSTimeInterval kRefreshTimeInterval = 5.0f;
     
     _lastSelectedRow = -1;
     
+    [_toolBarView setWantsLayer:YES];
+    [_toolBarView.layer setBackgroundColor:[NSColor colorWithRed:55.0f/255.0f green:55.0f/255.0f blue:55.0f/255.0f alpha:1.0f].CGColor];
+    
+    [_searchBarView setWantsLayer:YES];
+    [_searchBarView.layer setBackgroundColor:[NSColor colorWithRed:231.0f/255.0f green:231.0f/255.0f blue:231.0f/255.0f alpha:1.0f].CGColor];
+    
+//    [_tableView setWantsLayer:YES];
+//    [_tableView.layer setBackgroundColor:[NSColor colorWithRed:243.0f/255.0f green:243.0f/255.0f blue:243.0f/255.0f alpha:1.0f].CGColor];
+    
+    [_infoLabel setWantsLayer:YES];
+    [_infoLabel.layer setBackgroundColor:[NSColor colorWithRed:251.0f/255.0f green:251.0f/255.0f blue:251.0f/255.0f alpha:1.0f].CGColor];
+    
+    self.view.layer.masksToBounds = YES;
+    
+    [self addObserver:self forKeyPath:@"items" options:NSKeyValueObservingOptionNew context:nil];
+    
     [self _loadData];
     [self _startRefreshTimer];
     
@@ -116,6 +141,19 @@ static const NSTimeInterval kRefreshTimeInterval = 5.0f;
     // Update the view, if already loaded.
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+    
+    if ([keyPath isEqualToString:@"items"]) {
+        id items = change[NSKeyValueChangeNewKey];
+        NSInteger count = [(NSArray *)items count];
+        if (count > 0) {
+            _emptyView.hidden = YES;
+        } else {
+            _emptyView.hidden = NO;
+        }
+    }
+}
+
 - (void)_startRefreshTimer {
     
     _timer = [NSTimer scheduledTimerWithTimeInterval:kRefreshTimeInterval target:self selector:@selector(_checkGeneralPasteboard) userInfo:nil repeats:YES];
@@ -136,7 +174,7 @@ static const NSTimeInterval kRefreshTimeInterval = 5.0f;
     } else {
         items = [NSUnarchiver unarchiveObjectWithData:data];
     }
-    _items = [[items reverseObjectEnumerator] allObjects];
+    self.items = [[items reverseObjectEnumerator] allObjects];
 
     _infoLabel.stringValue = [NSString stringWithFormat:@"%@: %ld", NSLocalizedString(@"Items Count", @"Pasteboard items count"), _items.count];
     [_tableView reloadData];
@@ -155,7 +193,7 @@ static const NSTimeInterval kRefreshTimeInterval = 5.0f;
         if (!data) {
             NSMutableArray *items = [NSMutableArray array];
             [items addObject:object];
-            _items = [[items reverseObjectEnumerator] allObjects];
+            self.items = [[items reverseObjectEnumerator] allObjects];
             [self.userDefaults setObject:[NSArchiver archivedDataWithRootObject:items] forKey:kUserDefaultsPastedItems];
             [_tableView reloadData];
         } else {
@@ -190,7 +228,7 @@ static const NSTimeInterval kRefreshTimeInterval = 5.0f;
             }
             if (!bContains) {
                 [items addObject:object];
-                _items = [[items reverseObjectEnumerator] allObjects];
+                self.items = [[items reverseObjectEnumerator] allObjects];
                 [self.userDefaults setObject:[NSArchiver archivedDataWithRootObject:items] forKey:kUserDefaultsPastedItems];
                 [_tableView reloadData];
             }
@@ -203,7 +241,8 @@ static const NSTimeInterval kRefreshTimeInterval = 5.0f;
     
     [self.pasteboard clearContents];
     [self.userDefaults setObject:nil forKey:kUserDefaultsPastedItems];
-    _items = [NSMutableArray array];
+    self.items = [NSMutableArray array];
+    _lastSelectedRow = -1;
     [_tableView reloadData];
     _infoLabel.stringValue = NSLocalizedString(@"Clear Finished", @"All items in pasteboard are removed");
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -215,6 +254,7 @@ static const NSTimeInterval kRefreshTimeInterval = 5.0f;
 
 - (void)dealloc {
     
+    [self removeObserver:self forKeyPath:@"items"];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_timer invalidate];
     _timer = nil;
@@ -222,10 +262,70 @@ static const NSTimeInterval kRefreshTimeInterval = 5.0f;
 
 #pragma mark - button callback
 
-- (IBAction)clearButtonClicked:(NSButton *)sender {
+- (IBAction)clearAllButtonClicked:(NSButton *)sender {
     
     MSAlertViewController *vc = (MSAlertViewController *)self.alertWC.contentViewController;
+    [self presentViewControllerAsSheet:vc];
     [vc.view.window makeKeyAndOrderFront:nil];
+}
+
+- (IBAction)saveButtonClicked:(NSButton *)sender {
+    
+    if (_tableView.selectedRow == -1) {
+        return;
+    }
+    id item = _items[_tableView.selectedRow];
+    if ([item isKindOfClass:NSImage.class]) {
+        NSString *desktopPath = [NSString stringWithFormat:@"/Users/%@/Desktop/SimpleClip_Image_%ld.png", NSUserName(), _tableView.selectedRow];
+        BOOL result = [item saveToFilePath:desktopPath];
+        if (result) {
+            _infoLabel.stringValue = NSLocalizedString(@"Save Success", @"Save image result successful");
+        } else {
+            _infoLabel.stringValue = NSLocalizedString(@"Save Fail", @"Save image result failed");
+        }
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                _infoLabel.stringValue = [NSString stringWithFormat:@"%@: %ld", NSLocalizedString(@"Items Count", @"Pasteboard items count"), _items.count];
+            });
+        });
+    }
+}
+
+- (IBAction)itemCopyButtonClicked:(NSButton *)sender {
+    
+    id item = _items[_tableView.selectedRow];
+    [self.pasteboard clearContents];
+    if ([item isKindOfClass:NSString.class]) {
+        [self.pasteboard setString:item forType:NSStringPboardType];
+    } else if ([item isKindOfClass:NSImage.class]) {
+        [self.pasteboard setData:[(NSImage *)item TIFFRepresentation] forType:NSTIFFPboardType];
+    }
+    
+    _infoLabel.stringValue = NSLocalizedString(@"Copy Successfully", @"When a item is copied");
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _infoLabel.stringValue = [NSString stringWithFormat:@"%@: %ld", NSLocalizedString(@"Items Count", @"Pasteboard items count"), _items.count];
+        });
+    });
+}
+
+- (IBAction)itemPreviewButtonClicked:(NSButton *)sender {
+    
+    id item = _items[_tableView.selectedRow];
+    MSPreviewViewController *vc = (MSPreviewViewController *)self.previewWC.contentViewController;
+    if ([item isKindOfClass:NSString.class]) {
+        vc.textLabel.stringValue = item;
+        vc.pictureView.image = nil;
+    } else if ([item isKindOfClass:NSImage.class]) {
+        vc.textLabel.stringValue = @"";
+        vc.pictureView.image = item;
+    }
+    [self.previewWC.window makeKeyAndOrderFront:nil];
+}
+
+- (IBAction)textDeleteButtonPressed:(NSButton *)sender {
+    
+    _searchField.stringValue = @"";
 }
 
 #pragma mark - keyboard event
@@ -272,7 +372,7 @@ static const NSTimeInterval kRefreshTimeInterval = 5.0f;
 #pragma mark - table view delegate
 
 - (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row {
-    return 50.0f;
+    return 80.0f;
 }
 
 -(NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
@@ -285,10 +385,12 @@ static const NSTimeInterval kRefreshTimeInterval = 5.0f;
     if ([item isKindOfClass:NSImage.class]) {
         MSPasteContentImageCellView *cellView = [tableView makeViewWithIdentifier:@"ContentImageCellView" owner:self];
         cellView.imgView.image = _items[row];
+        cellView.itemTypeImageView.image = [NSImage imageNamed:@"img_item_icon"];
         return cellView;
     } else if ([item isKindOfClass:NSString.class]) {
         MSPasteContentTextCellView *cellView = [tableView makeViewWithIdentifier:@"ContentTextCellView" owner:self];
         cellView.textLabel.stringValue = _items[row];
+        cellView.itemTypeImageView.image = [NSImage imageNamed:@"text_item_icon"];
         return cellView;
     }
     return nil;
@@ -331,14 +433,6 @@ static const NSTimeInterval kRefreshTimeInterval = 5.0f;
     }
     
     _lastSelectedRow = _tableView.selectedRow;
-}
-
-- (BOOL)tableView:(NSTableView *)tableView shouldSelectRow:(NSInteger)row {
-    
-    
-    
-    
-    return YES;
 }
 
 #pragma mark - utils

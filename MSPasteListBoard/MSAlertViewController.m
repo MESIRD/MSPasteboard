@@ -22,12 +22,11 @@
 - (IBAction)clearButtonClicked:(id)sender {
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"ClearAllItems" object:nil];
-    [self.view.window close];
+    [self dismissViewController:self];
 }
 
 - (IBAction)cancelButtonClicked:(id)sender {
-    
-    [self.view.window close];
+    [self dismissViewController:self];
 }
 
 @end

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D75465481DC5D2CC008417D8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D754654A1DC5D2CC008417D8 /* Localizable.strings */; };
 		D75465561DC5F940008417D8 /* MSPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D75465551DC5F940008417D8 /* MSPreviewViewController.m */; };
+		D78CE4B41DCA54520058BE32 /* NSImage+Storage.m in Sources */ = {isa = PBXBuildFile; fileRef = D78CE4B31DCA54520058BE32 /* NSImage+Storage.m */; };
 		D7B04EE41DC64226005C451E /* MSAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B04EE31DC64226005C451E /* MSAlertViewController.m */; };
 		D7CB6C3F1DC58A6F00ED3531 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D7CB6C3E1DC58A6F00ED3531 /* AppDelegate.m */; };
 		D7CB6C421DC58A6F00ED3531 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D7CB6C411DC58A6F00ED3531 /* main.m */; };
@@ -24,6 +25,8 @@
 		D754654B1DC5D2DB008417D8 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		D75465541DC5F940008417D8 /* MSPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSPreviewViewController.h; sourceTree = "<group>"; };
 		D75465551DC5F940008417D8 /* MSPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSPreviewViewController.m; sourceTree = "<group>"; };
+		D78CE4B21DCA54520058BE32 /* NSImage+Storage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage+Storage.h"; sourceTree = "<group>"; };
+		D78CE4B31DCA54520058BE32 /* NSImage+Storage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSImage+Storage.m"; sourceTree = "<group>"; };
 		D7B04EE21DC64226005C451E /* MSAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAlertViewController.h; sourceTree = "<group>"; };
 		D7B04EE31DC64226005C451E /* MSAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSAlertViewController.m; sourceTree = "<group>"; };
 		D7CB6C3A1DC58A6F00ED3531 /* MSPasteListBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MSPasteListBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -52,6 +55,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D78CE4B11DCA54430058BE32 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				D78CE4B21DCA54520058BE32 /* NSImage+Storage.h */,
+				D78CE4B31DCA54520058BE32 /* NSImage+Storage.m */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		D7CB6C311DC58A6F00ED3531 = {
 			isa = PBXGroup;
 			children = (
@@ -71,6 +83,7 @@
 		D7CB6C3C1DC58A6F00ED3531 /* MSPasteListBoard */ = {
 			isa = PBXGroup;
 			children = (
+				D78CE4B11DCA54430058BE32 /* Utils */,
 				D7CB6C3D1DC58A6F00ED3531 /* AppDelegate.h */,
 				D7CB6C3E1DC58A6F00ED3531 /* AppDelegate.m */,
 				D7CB6C431DC58A6F00ED3531 /* ViewController.h */,
@@ -173,6 +186,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D78CE4B41DCA54520058BE32 /* NSImage+Storage.m in Sources */,
 				D7CB6C451DC58A6F00ED3531 /* ViewController.m in Sources */,
 				D7CB6C591DC5BF5A00ED3531 /* MSPasteContentImageCellView.m in Sources */,
 				D7CB6C421DC58A6F00ED3531 /* main.m in Sources */,

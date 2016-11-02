@@ -21,14 +21,6 @@
     // Do view setup here.
 }
 
-- (void)keyDown:(NSEvent *)event {
-    
-    if (event.keyCode == 49 || event.keyCode == 53) {
-        // press 'space' || 'esc'
-        [self.view.window close];
-    }
-}
-
 - (void)mouseDown:(NSEvent *)event {
     
     self.initialLocation = [event locationInWindow];

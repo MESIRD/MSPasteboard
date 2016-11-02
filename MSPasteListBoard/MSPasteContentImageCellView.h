@@ -12,5 +12,6 @@
 
 @property (weak) IBOutlet NSImageView *imgView;
 @property (weak) IBOutlet NSImageView *checkIconView;
+@property (weak) IBOutlet NSImageView *itemTypeImageView;
 
 @end
