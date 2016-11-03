@@ -11,7 +11,7 @@ It's a simple clipboard that could record all your copied items here.
 
 ### Usage
 
-Download SimpleClip.zip above.
+Download SimpleClip.zip [here](https://github.com/MESIRD/MSPasteboard/raw/master/SimpleClip.zip).
 
 Open app and it starts recording your pasted items (currently, text and image).
 
